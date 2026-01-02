@@ -1,19 +1,19 @@
-// const express = require("express");
-// const {
-//   addNewCourse,
-//   getAllCourses,
-//   getCourseDetailsByID,
-//   updateCourseByID,
-//   deleteCourseByID,
-//   getInstructorDashboardAnalytics
-// } = require("../../controllers/instructor-controller/course-controller");
-// const router = express.Router();
+const express = require("express");
+const {
+  addNewCourse,
+  getAllCourses,
+  getCourseDetailsByID,
+  updateCourseByID,
+  deleteCourseByID,
+  getInstructorDashboardAnalytics
+} = require("../../controllers/instructor-controller/course-controller");
+const router = express.Router();
 
-// router.post("/add", addNewCourse);
-// router.get("/get", getAllCourses);
-// router.get("/get/details/:id", getCourseDetailsByID);
-// router.put("/update/:id", updateCourseByID);
-// router.delete("/delete/:id", deleteCourseByID);
-// router.get("/get-instructor-dashboard-analytics/:instructorId", getInstructorDashboardAnalytics);
+router.post("/add", addNewCourse);
+router.get("/get", getAllCourses);
+router.get("/get/details/:id", getCourseDetailsByID);
+router.put("/update/:id", updateCourseByID);
+router.delete("/delete/:id", deleteCourseByID);
+router.get("/get-instructor-dashboard-analytics/:instructorId", getInstructorDashboardAnalytics);
 
-// module.exports = router;
+module.exports = router;
