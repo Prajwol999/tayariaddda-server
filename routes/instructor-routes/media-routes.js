@@ -1,71 +1,106 @@
-const express = require("express");
-const multer = require("multer");
-const {
-  uploadMediaToCloudinary,
-  deleteMediaFromCloudinary,
-} = require("../../helpers/cloudinary");
+// const express = require("express");
+// const multer = require("multer");
+// const {
+//   uploadMediaToCloudinary,
+//   deleteMediaFromCloudinary,
+// } = require("../../helpers/cloudinary");
 
-const router = express.Router();
+// const fs = require('fs');
+// const path = require('path');
 
-const upload = multer({ dest: "uploads/" });
+// const router = express.Router();
 
-router.post("/upload", upload.single("file"), async (req, res) => {
-  try {
-    const result = await uploadMediaToCloudinary(req.file.path);
-    res.status(200).json({
-      success: true,
-      data: result,
-    });
-  } catch (e) {
-    console.log(e);
+// const upload = multer({ dest: "uploads/" });
 
-    res.status(500).json({ success: false, message: "Error uploading file" });
-  }
-});
+// // Configure Local Storage for PDFs
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     const dir = 'uploads/books';
+//     if (!fs.existsSync(dir)) {
+//       fs.mkdirSync(dir, { recursive: true });
+//     }
+//     cb(null, dir);
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, Date.now() + '-' + file.originalname);
+//   }
+// });
 
-router.delete("/delete/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
+// const uploadLocal = multer({ storage: storage });
 
-    if (!id) {
-      return res.status(400).json({
-        success: false,
-        message: "Assest Id is required",
-      });
-    }
+// router.post("/upload-local", uploadLocal.single("file"), async (req, res) => {
+//   try {
+//     const url = `${req.protocol}://${req.get('host')}/${req.file.path.replace(/\\/g, "/")}`;
 
-    await deleteMediaFromCloudinary(id);
+//     res.status(200).json({
+//       success: true,
+//       data: {
+//         url: url
+//       }
+//     });
+//   } catch (e) {
+//     console.log(e);
+//     res.status(500).json({ success: false, message: "Error uploading file locally" });
+//   }
+// });
 
-    res.status(200).json({
-      success: true,
-      message: "Assest deleted successfully from cloudinary",
-    });
-  } catch (e) {
-    console.log(e);
+// router.post("/upload", upload.single("file"), async (req, res) => {
+//   try {
+//     const result = await uploadMediaToCloudinary(req.file.path);
+//     res.status(200).json({
+//       success: true,
+//       data: result,
+//     });
+//   } catch (e) {
+//     console.log(e);
 
-    res.status(500).json({ success: false, message: "Error deleting file" });
-  }
-});
+//     res.status(500).json({ success: false, message: "Error uploading file" });
+//   }
+// });
 
-router.post("/bulk-upload", upload.array("files", 10), async (req, res) => {
-  try {
-    const uploadPromises = req.files.map((fileItem) =>
-      uploadMediaToCloudinary(fileItem.path)
-    );
+// router.delete("/delete/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
 
-    const results = await Promise.all(uploadPromises);
+//     if (!id) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Assest Id is required",
+//       });
+//     }
 
-    res.status(200).json({
-      success: true,
-      data: results,
-    });
-  } catch (event) {
-    console.log(event);
+//     await deleteMediaFromCloudinary(id);
 
-    res
-      .status(500)
-      .json({ success: false, message: "Error in bulk uploading files" });
-  }
-});
+//     res.status(200).json({
+//       success: true,
+//       message: "Assest deleted successfully from cloudinary",
+//     });
+//   } catch (e) {
+//     console.log(e);
 
-module.exports = router;
+//     res.status(500).json({ success: false, message: "Error deleting file" });
+//   }
+// });
+
+// router.post("/bulk-upload", upload.array("files", 10), async (req, res) => {
+//   try {
+//     const uploadPromises = req.files.map((fileItem) =>
+//       uploadMediaToCloudinary(fileItem.path)
+//     );
+
+//     const results = await Promise.all(uploadPromises);
+
+//     res.status(200).json({
+//       success: true,
+//       data: results,
+//     });
+//   } catch (event) {
+//     console.log(event);
+
+//     res
+//       .status(500)
+//       .json({ success: false, message: "Error in bulk uploading files" });
+//   }
+// });
+
+// module.exports = router;
